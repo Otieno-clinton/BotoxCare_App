@@ -1,24 +1,266 @@
-{% extends "base.html" %}
-{% block content %}
-<div class="container mt-4">
-    <h2 class="text-center">Our Treatments</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Our Treatments - BotoxCare Platform</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <div class="row">
-        {% for treatment in treatments %}
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">{{ treatment.name }}</h5>
-                    <p class="card-text">{{ treatment.description|truncatewords:20 }}</p>
-                    <p><strong>Price:</strong> ${{ treatment.price }}</p>
-                    <p><strong>Duration:</strong> {{ treatment.duration }}</p>
-                    <a href="{% url 'treatment_detail' treatment.id %}" class="btn btn-primary">View Details</a>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .text-primary {
+            color: #F2784B !important;
+        }
+
+        .bg-primary {
+            background-color: #F2784B !important;
+        }
+
+        .btn-primary {
+            background-color: #F2784B;
+            border-color: #F2784B;
+        }
+
+        .btn-primary:hover {
+            background-color: #e16a3e;
+            border-color: #e16a3e;
+        }
+
+        .border-primary {
+            border-color: #F2784B !important;
+        }
+
+        .nav-link.active {
+            color: #F2784B !important;
+            font-weight: 500;
+        }
+
+        .dashboard-stats-card {
+            transition: all 0.3s ease;
+        }
+
+        .dashboard-stats-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .treatment-card {
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 0;
+            box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
+            height: 100%;
+        }
+
+        .treatment-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
+        }
+
+        .card-header {
+            border-bottom: 1px solid rgba(0,0,0,.05);
+            background-color: white;
+        }
+
+        .category-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .treatment-icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white py-3 shadow-sm">
+        <div class="container">
+            <a href="/" class="navbar-brand">
+                <h2 class="m-0 text-primary"><span class="text-dark">Botox</span>Care</h2>
+            </a>
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav ms-auto py-0">
+                    <a href="/" class="nav-item nav-link">Home</a>
+                    <a href="{% url 'services' %}" class="nav-item nav-link">Our services</a>
+                    <a href="{% url 'treatment_list' %}" class="nav-item nav-link active">Treatments</a>
+                    <a href="/specialists" class="nav-item nav-link">Our Specialists</a>
+                    <a href="{% url 'about' %}" class="nav-item nav-link">About</a>
+                    <a href="{% url 'home' %}" class="nav-item nav-link">Dashboard</a>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            {{ user.first_name }}
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{% url 'profile' %}">My Profile</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                        </ul>
+                    </li>
+                </div>
+                <a href="{% url 'book_appointment' %}" class="btn btn-primary ms-3">Book Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Treatments Header -->
+    <section class="bg-light py-4 mb-4 shadow-sm">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="fw-bold">Our Treatments</h1>
+                    <p class="lead mb-0">Explore our range of professional aesthetic treatments</p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <a href="{% url 'book_appointment' %}" class="btn btn-primary">Book an Appointment</a>
                 </div>
             </div>
         </div>
-        {% empty %}
-        <p class="text-center">No treatments available.</p>
-        {% endfor %}
+    </section>
+
+    <!-- Treatments Content -->
+    <div class="container py-4">
+        <!-- Filter Section -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body p-4">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="input-group">
+                            <span class="input-group-text bg-white border-end-0">
+                                <i class="fas fa-search text-muted"></i>
+                            </span>
+                            <input type="text" class="form-control border-start-0" placeholder="Search treatments...">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select">
+                            <option selected>All Categories</option>
+                            <option>Facial Treatments</option>
+                            <option>Wrinkle Reduction</option>
+                            <option>Lip Fillers</option>
+                            <option>Skin Rejuvenation</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Treatments List -->
+        <div class="row g-4">
+            {% for treatment in treatments %}
+            <div class="col-md-4 mb-4">
+                <div class="treatment-card card h-100">
+                    <span class="category-badge badge bg-primary">{{ treatment.category }}</span>
+                    <div class="card-body p-4">
+                        <div class="treatment-icon bg-primary bg-opacity-10 mx-auto">
+                            <i class="fas fa-spa text-primary"></i>
+                        </div>
+                        <h5 class="card-title fw-bold text-center mb-3">{{ treatment.name }}</h5>
+                        <p class="card-text text-muted">{{ treatment.description|truncatewords:20 }}</p>
+                        <div class="d-flex justify-content-between mt-3">
+                            <div>
+                                <small class="d-block text-muted mb-1"><i class="fas fa-tag me-1"></i> Price</small>
+                                <p class="fw-bold mb-0">Ksh{{ treatment.price }}</p>
+                            </div>
+                            <div>
+                                <small class="d-block text-muted mb-1"><i class="fas fa-clock me-1"></i> Duration</small>
+                                <p class="fw-bold mb-0">{{ treatment.duration }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white border-top-0 text-center p-3">
+                        <a href="{% url 'treatment_detail' treatment.id %}" class="btn btn-primary">
+                            View Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <div class="p-4 rounded-circle bg-primary bg-opacity-10 d-inline-flex align-items-center justify-content-center mb-3" style="width: 100px; height: 100px;">
+                    <i class="fas fa-spa text-primary fa-3x"></i>
+                </div>
+                <h4 class="mb-3">No treatments available</h4>
+                <p class="text-muted">Please check back later for our updated treatment list.</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        <nav aria-label="Page navigation" class="mt-5">
+            <ul class="pagination justify-content-center">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                </li>
+                <li class="page-item active"><a class="page-link bg-primary border-primary" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#">Next</a>
+                </li>
+            </ul>
+        </nav>
     </div>
-</div>
-{% endblock %}
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>About Us</h5>
+                    <p>Connecting patients with top-tier Botox specialists</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/faq" class="text-white">FAQ</a></li>
+                        <li><a href="/privacy" class="text-white">Privacy Policy</a></li>
+                        <li><a href="/terms" class="text-white">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Contact</h5>
+                    <p>Email: support@botoxplatform.com</p>
+                    <p>Phone: (555) 123-4567</p>
+                    <div class="mt-3">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-3 text-center">
+                © 2025 BotoxCare. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

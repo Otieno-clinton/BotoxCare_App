@@ -23,7 +23,8 @@ def reviews_list(request):
 
 @login_required
 def submit_review(request, treatment_id):
-    treatment = get_object_or_404(Treatment, id=treatment_id)  # Get treatment or return 404
+    treatment = get_object_or_404(Treatment, id=treatment_id)
+    treatments = Treatment.objects.all()  # Get all treatments
 
     if request.method == "POST":
         rating = request.POST["rating"]
@@ -39,4 +40,8 @@ def submit_review(request, treatment_id):
         messages.success(request, "Review submitted successfully!")
         return redirect("review_list")
 
-    return render(request, "clients/reviews/submit_review.html", {"treatment": treatment})
+
+    return render(request, "clients/reviews/submit_review.html", {
+        "treatments": treatments,
+        "selected_treatment_id": treatment_id  # Pass the ID to match the template
+    })

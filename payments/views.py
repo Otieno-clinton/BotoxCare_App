@@ -71,7 +71,7 @@ def stk(request):
             "PartyB": LipanaMpesaPpassword.Business_short_code,
             "PhoneNumber": phone,
             "CallBackURL": "https://sandbox.safaricom.co.ke/mpesa/",
-            "AccountReference": "Clinton",
+            "AccountReference": "PrimCare",
             "TransactionDesc": "Web Development Charges"
         }
         response = requests.post(api_url, json=request, headers=headers)

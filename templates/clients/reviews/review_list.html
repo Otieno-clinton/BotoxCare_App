@@ -147,39 +147,50 @@
             </div>
         </div>
 
-        <!-- Submit Review Card -->
-        <div class="card border-0 shadow-sm mb-4">
-            <div class="card-header bg-white py-3">
-                <h5 class="mb-0">Submit Your Review</h5>
-            </div>
-            <div class="card-body p-4 text-center">
-                <div class="mb-4">
-                    <i class="fa-solid fa-star text-primary fa-3x mb-3"></i>
-                    <h6 class="mb-3">Share your experience with our treatments and specialists</h6>
-                    <p class="text-muted mb-4">Your feedback helps us improve our services and helps other clients make informed decisions.</p>
+        <!-- Submit Review Card - Only shown to non-specialist users -->
+        {% if not user.is_specialist %}
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white py-3">
+                    <h5 class="mb-0">Submit Your Review</h5>
                 </div>
+                <div class="card-body p-4 text-center">
+                    <div class="mb-4">
+                        <i class="fa-solid fa-star text-primary fa-3x mb-3"></i>
+                        <h6 class="mb-3">Share your experience with our treatments and specialists</h6>
+                        <p class="text-muted mb-4">Your feedback helps us improve our services and helps other clients make informed decisions.</p>
+                    </div>
 
-                {% if treatments %}
-                    <div class="row justify-content-center">
-                        <div class="col-md-6">
-                            <div class="mb-4">
-                                <select class="form-select mb-3" id="treatment-select">
-                                    <option selected disabled>Select a treatment to review</option>
-                                    {% for treatment in treatments %}
-                                        <option value="{{ treatment.id }}">{{ treatment.name }}</option>
-                                    {% endfor %}
-                                </select>
+                    {% if treatments %}
+                        <div class="row justify-content-center">
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <select class="form-select mb-3" id="treatment-select">
+                                        <option selected disabled>Select a treatment to review</option>
+                                        {% for treatment in treatments %}
+                                            <option value="{{ treatment.id }}">{{ treatment.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <a href="#" id="review-link" class="btn btn-primary disabled">Submit a Review</a>
                             </div>
-                            <a href="#" id="review-link" class="btn btn-primary disabled">Submit a Review</a>
                         </div>
-                    </div>
-                {% else %}
-                    <div class="alert alert-info">
-                        <p class="mb-0">Complete a treatment to leave a review</p>
-                    </div>
-                {% endif %}
+                    {% else %}
+                        <div class="alert alert-info">
+                            <p class="mb-0">Complete a treatment to leave a review</p>
+                        </div>
+                    {% endif %}
+                </div>
             </div>
-        </div>
+        {% else %}
+            <!-- Message for specialists -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4 text-center">
+                    <i class="fas fa-info-circle text-primary fa-2x mb-3"></i>
+                    <h6>As a specialist, you cannot submit reviews</h6>
+                    <p class="text-muted mb-0">This feature is only available to clients who have received treatments.</p>
+                </div>
+            </div>
+        {% endif %}
     </div>
 
     <!-- JavaScript for handling review link -->
@@ -188,7 +199,7 @@
             const treatmentSelect = document.getElementById('treatment-select');
             const reviewLink = document.getElementById('review-link');
 
-            if (treatmentSelect) {
+            if (treatmentSelect && reviewLink) {
                 treatmentSelect.addEventListener('change', function() {
                     const treatmentId = this.value;
                     if (treatmentId) {

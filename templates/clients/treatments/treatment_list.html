@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center">Our Treatments</h2>
+
+    <div class="row">
+        {% for treatment in treatments %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ treatment.name }}</h5>
+                    <p class="card-text">{{ treatment.description|truncatewords:20 }}</p>
+                    <p><strong>Price:</strong> ${{ treatment.price }}</p>
+                    <p><strong>Duration:</strong> {{ treatment.duration }}</p>
+                    <a href="{% url 'treatment_detail' treatment.id %}" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center">No treatments available.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

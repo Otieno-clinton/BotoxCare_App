@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>BotoxCare Platform - Clinic Admin Dashboard</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .text-primary {
+            color: #F2784B !important;
+        }
+
+        .bg-primary {
+            background-color: #1d2434 !important;
+        }
+
+        .btn-primary {
+            background-color: #F2784B;
+            border-color: #F2784B;
+        }
+
+        .btn-primary:hover {
+            background-color: #e16a3e;
+            border-color: #e16a3e;
+        }
+
+        .border-primary {
+            border-color: #F2784B !important;
+        }
+
+        .sidebar {
+            min-height: 100vh;
+            background-color: #1d2434;
+            color: white;
+        }
+
+        .sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            padding: 0.75rem 1rem;
+            border-radius: 0;
+        }
+
+        .sidebar .nav-link:hover,
+        .sidebar .nav-link.active {
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar .nav-link i {
+            margin-right: 10px;
+        }
+
+        .card-header {
+            font-weight: 600;
+        }
+
+        .dashboard-header {
+            background-color: #1d2434;
+            color: white;
+            padding: 20px 0;
+        }
+
+        .dashboard-content {
+            padding: 20px;
+        }
+
+        .badge {
+            padding: 0.5em 0.75em;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white py-3 shadow-sm sticky-top">
+        <div class="container">
+            <a href="/" class="navbar-brand">
+                <h2 class="m-0 text-primary"><span class="text-dark">Botox</span>Care</h2>
+            </a>
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav ms-auto py-0">
+                    <a href="/" class="nav-item nav-link">Home</a>
+                    <a href="{% url 'clinic_admin_dashboard' %}" class="nav-item nav-link active">Dashboard</a>
+                    <a href="{% url 'edit_clinic_details' %}" class="nav-item nav-link">Clinic Details</a>
+                    <a href="{% url 'manage_appointments' %}" class="nav-item nav-link">Appointments</a>
+                    <a href="{% url 'add_specialist' %}" class="nav-item nav-link">Specialists</a>
+                </div>
+                <a href="{% url 'logout' %}" class="btn btn-outline-danger ms-3">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 col-lg-2 d-md-block sidebar collapse">
+                <div class="position-sticky pt-4">
+                    <div class="text-center mb-4">
+                        <h4 class="text-white">Admin Panel</h4>
+                        <p class="text-white-50">Welcome, {{ clinic_admin.user.username }}</p>
+                    </div>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{% url 'clinic_admin_dashboard' %}">
+                                <i class="fas fa-tachometer-alt"></i> Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'edit_clinic_details' %}">
+                                <i class="fas fa-clinic-medical"></i> Clinic Details
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'add_specialist' %}">
+                                <i class="fas fa-user-md"></i> Specialists
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'manage_appointments' %}">
+                                <i class="fas fa-calendar-check"></i> Appointments
+                            </a>
+                        </li>
+                        <li class="nav-item mt-5">
+                            <a class="nav-link text-danger" href="{% url 'logout' %}">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="dashboard-content">
+                    <div class="container">
+                        <h2 class="mb-4 text-primary">Clinic Admin Dashboard</h2>
+
+                        <!-- Clinic Details -->
+                        <div class="card mb-4 shadow-sm">
+                            <div class="card-header bg-primary text-white">
+                                <i class="fas fa-clinic-medical me-2"></i> Clinic Details & Services
+                            </div>
+                            <div class="card-body">
+                                <h5>Clinic Name: {{ clinic_admin.clinic_name }}</h5>
+                                <p><strong>Address:</strong> {{ clinic_admin.address }}</p>
+                                <p><strong>Phone:</strong> {{ clinic_admin.phone_number }}</p>
+                                <a href="{% url 'edit_clinic_details' %}" class="btn btn-warning btn-sm">
+                                    <i class="fas fa-edit me-1"></i> Edit Clinic Details
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Specialist Management -->
+                        <div class="card mb-4 shadow-sm">
+                            <div class="card-header bg-dark text-white">
+                                <i class="fas fa-user-md me-2"></i> Specialists Management
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for specialist in specialists %}
+                                        <tr>
+                                            <td>{{ specialist.user.username }}</td>
+                                            <td>
+                                                {% if specialist.is_active %}
+                                                    <span class="badge bg-success">Active</span>
+                                                {% else %}
+                                                    <span class="badge bg-danger">Suspended</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if not specialist.is_active %}
+                                                    <a href="{% url 'approve_specialist' specialist.id %}" class="btn btn-success btn-sm">
+                                                        <i class="fas fa-check me-1"></i> Approve
+                                                    </a>
+                                                {% else %}
+                                                    <a href="{% url 'suspend_specialist' specialist.id %}" class="btn btn-danger btn-sm">
+                                                        <i class="fas fa-ban me-1"></i> Suspend
+                                                    </a>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        {% empty %}
+                                        <tr>
+                                            <td colspan="3" class="text-center">No specialists found.</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                <a href="{% url 'add_specialist' %}" class="btn btn-primary">
+                                    <i class="fas fa-plus me-1"></i> Add New Specialist
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Appointments Management -->
+                        <div class="card mb-4 shadow-sm">
+                            <div class="card-header text-white" style="background-color: #17a2b8;">
+                                <i class="fas fa-calendar-check me-2"></i> Appointments Management
+                            </div>
+                            <div class="card-body">
+                                <p>Manage and oversee all client bookings.</p>
+                                <a href="{% url 'manage_appointments' %}" class="btn btn-primary">
+                                    <i class="fas fa-eye me-1"></i> View Appointments
+                                </a>
+                            </div>
+                        </div>
+
+                        {#    <!-- Customer Support & Feedback -->#}
+                        {#    <div class="card">#}
+                        {#        <div class="card-header bg-secondary text-white">#}
+                        {#            Customer Support & Feedback#}
+                        {#        </div>#}
+                        {#        <div class="card-body">#}
+                        {#            <p>Handle client inquiries, complaints, and disputes.</p>#}
+                        {#            <a href="{% url 'customer_inquiries' %}" class="btn btn-secondary">View Inquiries</a>#}
+                        {#            <a href="{% url 'dispute_resolution' %}" class="btn btn-danger">Resolve Disputes</a>#}
+                        {#        </div>#}
+                        {#    </div>#}
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>BotoxCare Admin Portal</h5>
+                    <p>Managing your clinic with ease</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p>Need help? Contact support@botoxplatform.com</p>
+                    <p>Phone: (555) 123-4567</p>
+                </div>
+            </div>
+            <div class="mt-3 text-center">
+                © 2025 BotoxCare. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

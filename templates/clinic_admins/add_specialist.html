@@ -1,0 +1,81 @@
+{% extends "base_admin.html" %}
+{% block content %}
+
+<div class="container mt-4">
+    <h2>Add New Specialist</h2>
+    <p>Fill in the details below to register a new specialist.</p>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label for="full_name" class="form-label">Full Name</label>
+            <input type="text" class="form-control" id="full_name" name="full_name" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Email (for login)</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="specialty" class="form-label">Specialty</label>
+            <select class="form-select" id="specialty" name="specialty" required>
+                <option value="Dermatologist">Dermatologist</option>
+                <option value="Plastic Surgeon">Plastic Surgeon</option>
+                <option value="Cosmetic Specialist">Cosmetic Specialist</option>
+                <option value="Licensed Professional">Licensed Professional</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="credentials" class="form-label">Credentials</label>
+            <textarea class="form-control" id="credentials" name="credentials" rows="3" required></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="experience_years" class="form-label">Years of Experience</label>
+            <input type="number" class="form-control" id="experience_years" name="experience_years" min="0" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="bio" class="form-label">Bio (Optional)</label>
+            <textarea class="form-control" id="bio" name="bio" rows="3"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="available_days" class="form-label">Available Days</label>
+            <input type="text" class="form-control" id="available_days" name="available_days" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="working_hours" class="form-label">Working Hours</label>
+            <input type="text" class="form-control" id="working_hours" name="working_hours" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="consultation_fee" class="form-label">Consultation Fee (KSh)</label>
+            <input type="number" class="form-control" id="consultation_fee" name="consultation_fee" step="0.01" required>
+        </div>
+
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="virtual_consultations" name="accepts_virtual_consultations" checked>
+            <label class="form-check-label" for="virtual_consultations">Accept Virtual Consultations</label>
+        </div>
+
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="in_person_consultations" name="accepts_in_person_consultations" checked>
+            <label class="form-check-label" for="in_person_consultations">Accept In-Person Consultations</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">Add Specialist</button>
+        <a href="{% url 'clinic_admin_dashboard' %}" class="btn btn-secondary mt-3">Cancel</a>
+    </form>
+</div>
+
+{% endblock %}

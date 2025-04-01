@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Client Dashboard - BotoxCare Platform</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .text-primary {
+            color: #F2784B !important;
+        }
+
+        .bg-primary {
+            background-color: #F2784B !important;
+        }
+
+        .btn-primary {
+            background-color: #F2784B;
+            border-color: #F2784B;
+        }
+
+        .btn-primary:hover {
+            background-color: #e16a3e;
+            border-color: #e16a3e;
+        }
+
+        .border-primary {
+            border-color: #F2784B !important;
+        }
+
+        .nav-link.active {
+            color: #F2784B !important;
+            font-weight: 500;
+        }
+
+        .dashboard-stats-card {
+            transition: all 0.3s ease;
+        }
+
+        .dashboard-stats-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .dashboard-icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+        }
+
+        .activity-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card {
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            border-bottom: 1px solid rgba(0,0,0,.05);
+            background-color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white py-3 shadow-sm">
+        <div class="container">
+            <a href="/" class="navbar-brand">
+                <h2 class="m-0 text-primary"><span class="text-dark">Botox</span>Care</h2>
+            </a>
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav ms-auto py-0">
+                    <a href="/" class="nav-item nav-link">Home</a>
+                    <a href="{% url 'services' %}" class="nav-item nav-link">Our services</a>
+                    <a href="{% url 'treatment_list' %}" class="nav-item nav-link">Treatments</a>
+                    <a href="/specialists" class="nav-item nav-link">Our Specialists</a>
+                    <a href="{% url 'about' %}" class="nav-item nav-link">About</a>
+                    <a href="{% url 'home' %}" class="nav-item nav-link active">Dashboard</a>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            {{ user.first_name }}
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{% url 'profile' %}">My Profile</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                        </ul>
+                    </li>
+                </div>
+                <a href="{% url 'book_appointment' %}" class="btn btn-primary ms-3">Book Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Header -->
+    <section class="bg-light py-4 mb-4 shadow-sm">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="fw-bold">Welcome, <span class="text-primary">{{ user.username }}</span></h1>
+                    <p class="lead mb-0">Manage your treatments and appointments</p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <a href="{% url 'book_appointment' %}" class="btn btn-primary">Book New Appointment</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Content -->
+    <div class="container py-4">
+        <!-- Dashboard Stats Cards Row -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100 dashboard-stats-card">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center">
+                            <div class="dashboard-icon bg-primary bg-opacity-10 me-3">
+                                <i class="fa-solid fa-calendar-check text-primary fa-2x"></i>
+                            </div>
+                            <div>
+                                <h6 class="card-subtitle mb-1 text-muted">Upcoming Appointments</h6>
+                                <h3 class="card-title mb-0">{{ upcoming_appointments_count }}</h3>
+                            </div>
+                        </div>
+                        <a href="{% url 'appointment_list' %}" class="btn btn-sm btn-link text-primary p-0 mt-3">View All</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100 dashboard-stats-card">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center">
+                            <div class="dashboard-icon bg-success bg-opacity-10 me-3">
+                                <i class="fa-solid fa-check-circle text-success fa-2x"></i>
+                            </div>
+                            <div>
+                                <h6 class="card-subtitle mb-1 text-muted">Completed Treatments</h6>
+                                <h3 class="card-title mb-0">{{ completed_treatments|length }}</h3>
+                            </div>
+                        </div>
+{#                        <a href="{% url 'treatment_history' %}" class="btn btn-sm btn-link text-primary p-0 mt-3">View History</a>#}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100 dashboard-stats-card">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center">
+                            <div class="dashboard-icon bg-info bg-opacity-10 me-3">
+                                <i class="fa-solid fa-star text-info fa-2x"></i>
+                            </div>
+                            <div>
+                                <h6 class="card-subtitle mb-1 text-muted">Your Reviews</h6>
+                                <h3 class="card-title mb-0">{{ user.reviews.count }}</h3>
+                            </div>
+                        </div>
+                        <a href="{% url 'review_list' %}" class="btn btn-sm btn-link text-primary p-0 mt-3">View Reviews</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Main Content Area - Left Column -->
+            <div class="col-lg-8">
+                <!-- Upcoming Appointments Card -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header py-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0 fw-bold">Upcoming Appointments</h5>
+                            <a href="{% url 'appointment_list' %}" class="btn btn-sm btn-outline-primary">View All</a>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        {% if upcoming_appointments %}
+                        <div class="list-group list-group-flush">
+                            {% for appointment in upcoming_appointments %}
+                            <div class="list-group-item p-3">
+                                <div class="row align-items-center">
+                                    <div class="col-md-2 text-center">
+                                        <div class="p-2 rounded-circle bg-primary bg-opacity-10 mx-auto mb-2" style="width: 60px; height: 60px;">
+                                            <h5 class="mb-0 text-primary">{{ appointment.date|date:"M"|upper }}</h5>
+                                            <h3 class="mb-0">{{ appointment.date|date:"d" }}</h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <h6 class="mb-1 fw-bold">{{ appointment.treatment_type }}</h6>
+                                        <p class="mb-0 text-muted"><i class="fas fa-user me-1"></i> {{ appointment.specialist.name }}</p>
+                                        <p class="mb-0 text-muted"><i class="fas fa-clock me-1"></i> {{ appointment.time }}</p>
+                                    </div>
+                                    <div class="col-md-3 text-md-end">
+                                        <a href="/appointment/{{ appointment.id }}" class="btn btn-sm btn-primary">Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-calendar text-muted mb-3" style="font-size: 3rem;"></i>
+                            <p class="text-muted mb-0">No upcoming appointments</p>
+                            <a href="{% url 'book_appointment' %}" class="btn btn-primary mt-3">Book Your First Appointment</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% if upcoming_appointments %}
+                    <div class="card-footer bg-white text-center py-3">
+                        <a href="{% url 'book_appointment' %}" class="btn btn-primary">Book New Appointment</a>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Recommended Treatments Card -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header py-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0 fw-bold">Recommended Treatments</h5>
+                            <a href="{% url 'treatment_list' %}" class="btn btn-sm btn-outline-primary">Browse All</a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        {% if recommended_treatments %}
+                        <div class="row g-3">
+                            {% for treatment in recommended_treatments %}
+                            <div class="col-md-6">
+                                <div class="card h-100 shadow-sm">
+                                    <div class="card-body">
+                                        <span class="badge bg-primary mb-2">{{ treatment.category }}</span>
+                                        <h6 class="card-title fw-bold">{{ treatment.name }}</h6>
+                                        <p class="small mb-0">{{ treatment.short_description }}</p>
+                                    </div>
+                                    <div class="card-footer bg-white border-top-0 text-end">
+                                        <a href="/treatment/{{ treatment.id }}" class="btn btn-sm btn-outline-primary">Learn More</a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <div class="text-center py-4">
+                            <i class="fas fa-spa text-muted mb-3" style="font-size: 3rem;"></i>
+                            <p class="text-muted mb-0">No recommendations yet</p>
+                            <a href="{% url 'treatment_list' %}" class="btn btn-primary mt-3">Browse All Treatments</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content Area - Right Column -->
+            <div class="col-lg-4">
+                <!-- Reviews Card -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header py-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0 fw-bold">Your Reviews</h5>
+                            <a href="{% url 'review_list' %}" class="btn btn-sm btn-outline-primary">View All</a>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="text-center mb-4">
+                            <div class="p-3 rounded-circle bg-primary bg-opacity-10 d-inline-flex align-items-center justify-content-center mb-3" style="width: 70px; height: 70px;">
+                                <i class="fa-solid fa-star text-primary fa-2x"></i>
+                            </div>
+                            <h6 class="mb-3">Share your experience</h6>
+                            <p class="text-muted mb-4 small">Your feedback helps us improve our services and helps other clients make informed decisions.</p>
+                        </div>
+
+                        {% if completed_treatments %}
+                            <div class="mb-4">
+                                <select class="form-select mb-3" id="treatment-select">
+                                    <option selected disabled>Select a treatment to review</option>
+                                    {% for treatment in completed_treatments %}
+                                        <option value="{{ treatment.id }}">{{ treatment.treatment_type }} ({{ treatment.date|date:"M d, Y" }})</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="d-grid">
+                                <a href="#" id="review-link" class="btn btn-primary disabled">Submit a Review</a>
+                            </div>
+                        {% else %}
+                            <div class="alert alert-info">
+                                <p class="mb-0 small">Complete a treatment to leave a review</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Recent Activities Card -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header py-3">
+                        <h5 class="mb-0 fw-bold">Recent Activities</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        {% if recent_activities %}
+                        <div class="list-group list-group-flush">
+                            {% for activity in recent_activities %}
+                            <div class="list-group-item p-3">
+                                <div class="d-flex">
+                                    <div class="me-3">
+                                        {% if activity.type == 'appointment_booked' %}
+                                        <div class="activity-icon bg-primary d-flex align-items-center justify-content-center">
+                                            <i class="fas fa-calendar-check text-white"></i>
+                                        </div>
+                                        {% elif activity.type == 'treatment_completed' %}
+                                        <div class="activity-icon bg-success d-flex align-items-center justify-content-center">
+                                            <i class="fas fa-check text-white"></i>
+                                        </div>
+                                        {% else %}
+                                        <div class="activity-icon bg-info d-flex align-items-center justify-content-center">
+                                            <i class="fas fa-info text-white"></i>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    <div>
+                                        <p class="mb-1 small">{{ activity.message }}</p>
+                                        <p class="small text-muted mb-0">{{ activity.timestamp }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-history text-muted mb-3" style="font-size: 3rem;"></i>
+                            <p class="text-muted mb-0">No recent activities</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for handling review link -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const treatmentSelect = document.getElementById('treatment-select');
+            const reviewLink = document.getElementById('review-link');
+
+            if (treatmentSelect) {
+                treatmentSelect.addEventListener('change', function() {
+                    const treatmentId = this.value;
+                    if (treatmentId) {
+                        reviewLink.href = "{% url 'submit_review' treatment_id=0 %}".replace('0', treatmentId);
+                        reviewLink.classList.remove('disabled');
+                    } else {
+                        reviewLink.classList.add('disabled');
+                    }
+                });
+            }
+        });
+    </script>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>About Us</h5>
+                    <p>Connecting patients with top-tier Botox specialists</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/faq" class="text-white">FAQ</a></li>
+                        <li><a href="/privacy" class="text-white">Privacy Policy</a></li>
+                        <li><a href="/terms" class="text-white">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Contact</h5>
+                    <p>Email: support@botoxplatform.com</p>
+                    <p>Phone: (555) 123-4567</p>
+                    <div class="mt-3">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-3 text-center">
+                © 2025 BotoxCare. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

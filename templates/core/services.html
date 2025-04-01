@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}BotoxCare Platform - Services{% endblock %}</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="{% static 'lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css' %}" rel="stylesheet" />
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .text-primary {
+            color: #F2784B !important;
+        }
+
+        .bg-primary {
+            background-color: #1d2434 !important;
+        }
+
+        .btn-primary {
+            background-color: #F2784B;
+            border-color: #F2784B;
+        }
+
+        .btn-primary:hover {
+            background-color: #e16a3e;
+            border-color: #e16a3e;
+        }
+
+        .border-primary {
+            border-color: #F2784B !important;
+        }
+
+        .jumbotron-fluid {
+            background-image: linear-gradient(rgba(29, 36, 52, 0.7), rgba(29, 36, 52, 0.7)), url('/api/placeholder/1200/600');
+            background-position: center;
+            background-size: cover;
+            padding: 100px 0;
+            margin-bottom: 0;
+        }
+
+        .service-item {
+            position: relative;
+            margin: 15px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-text {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.7));
+            padding-top: 30px;
+        }
+
+        .testimonial-carousel .position-relative {
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            margin: 10px;
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white py-3 shadow-sm">
+        <div class="container">
+            <a href="/" class="navbar-brand">
+                <h2 class="m-0 text-primary"><span class="text-dark">Botox</span>Care</h2>
+            </a>
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav ms-auto py-0">
+                    <a href="/" class="nav-item nav-link">Home</a>
+                    <a href="#how-it-works" class="nav-item nav-link">How It Works</a>
+                    <a href="#treatments" class="nav-item nav-link active">Treatments</a>
+                    <a href="#specialists" class="nav-item nav-link">Our Specialists</a>
+                    <a href="{% url 'about' %}" class="nav-item nav-link">About</a>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            Login
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{% url 'login' %}">Client login</a></li>
+                            <li><a class="dropdown-item" href="{% url 'specialist_login' %}">Specialist login</a></li>
+                            <li><a class="dropdown-item" href="{% url 'clinic_admin_login' %}">Clinic Admin login</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            Register
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{% url 'register' %}">Client Registration</a></li>
+                            <li><a class="dropdown-item" href="{% url 'specialist_register' %}">Specialist Registration</a></li>
+                            <li><a class="dropdown-item" href="{% url 'clinic_admin_register' %}">Clinic Admin Registration</a></li>
+                        </ul>
+                    </li>
+                </div>
+                <a href="{% url 'book_appointment' %}" class="btn btn-primary ms-3">Book Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Start -->
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container text-center py-5">
+            <h1 class="text-white display-4 fw-bold mb-4">Our Treatments</h1>
+            <div class="d-inline-flex align-items-center text-white">
+                <p class="m-0"><a class="text-white" href="/">Home</a></p>
+                <i class="fas fa-circle px-3" style="font-size: 5px;"></i>
+                <p class="m-0">Treatments</p>
+            </div>
+        </div>
+    </div>
+    <!-- Header End -->
+
+    <!-- Service Start -->
+    <div class="container-fluid py-5">
+        <div class="container py-4">
+            <div class="text-center mb-5">
+                <h6 class="d-inline-block bg-light text-primary text-uppercase py-1 px-2">Our Services</h6>
+                <h2 class="fw-bold mb-3">Expert Botox & Skincare Solutions</h2>
+                <p>Discover our wide range of treatments designed to enhance your natural beauty</p>
+            </div>
+
+            <div class="row g-4 service-items">
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-item position-relative">
+                        <img class="img-fluid w-100" src="{% static 'assets/img/service-1.jpg' %}" alt="Botox Treatment">
+                        <div class="service-text text-center">
+                            <h4 class="text-white font-weight-medium px-3">Botox Treatment</h4>
+                            <p class="text-white px-3 mb-3">Reduce the appearance of wrinkles and fine lines with our expert Botox injections.</p>
+                            <div class="w-100 bg-white text-center p-4">
+                                <a class="btn btn-primary" href="{% url 'book_appointment' %}">Book Consultation</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-item position-relative">
+                        <img class="img-fluid w-100" src="{% static 'assets/img/service-2.jpg' %}" alt="Facial Fillers">
+                        <div class="service-text text-center">
+                            <h4 class="text-white font-weight-medium px-3">Facial Fillers</h4>
+                            <p class="text-white px-3 mb-3">Restore volume and youthfulness with our premium dermal fillers.</p>
+                            <div class="w-100 bg-white text-center p-4">
+                                <a class="btn btn-primary" href="{% url 'book_appointment' %}">Book Consultation</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-item position-relative">
+                        <img class="img-fluid w-100" src="{% static 'assets/img/service-3.jpg' %}" alt="Lip Enhancement">
+                        <div class="service-text text-center">
+                            <h4 class="text-white font-weight-medium px-3">Lip Enhancement</h4>
+                            <p class="text-white px-3 mb-3">Achieve fuller, more defined lips with our specialized treatments.</p>
+                            <div class="w-100 bg-white text-center p-4">
+                                <a class="btn btn-primary" href="{% url 'book_appointment' %}">Book Consultation</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-item position-relative">
+                        <img class="img-fluid w-100" src="{% static 'assets/img/service-4.jpg' %}" alt="Anti-Aging Treatments">
+                        <div class="service-text text-center">
+                            <h4 class="text-white font-weight-medium px-3">Anti-Aging Treatments</h4>
+                            <p class="text-white px-3 mb-3">Comprehensive solutions to turn back the clock and rejuvenate your appearance.</p>
+                            <div class="w-100 bg-white text-center p-4">
+                                <a class="btn btn-primary" href="{% url 'book_appointment' %}">Book Consultation</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-item position-relative">
+                        <img class="img-fluid w-100" src="{% static 'assets/img/service-5.jpg' %}" alt="Skin Rejuvenation">
+                        <div class="service-text text-center">
+                            <h4 class="text-white font-weight-medium px-3">Skin Rejuvenation</h4>
+                            <p class="text-white px-3 mb-3">Renew and revitalize your skin with our advanced procedures.</p>
+                            <div class="w-100 bg-white text-center p-4">
+                                <a class="btn btn-primary" href="{% url 'book_appointment' %}">Book Consultation</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-item position-relative">
+                        <img class="img-fluid w-100" src="{% static 'assets/img/service-6.jpg' %}" alt="Virtual Consultation">
+                        <div class="service-text text-center">
+                            <h4 class="text-white font-weight-medium px-3">Virtual Consultation</h4>
+                            <p class="text-white px-3 mb-3">Connect with our specialists remotely for personalized skincare advice.</p>
+                            <div class="w-100 bg-white text-center p-4">
+                                <a class="btn btn-primary" href="{% url 'book_appointment' %}">Book Consultation</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Service End -->
+
+    <!-- Testimonial Start -->
+    <section id="testimonials" class="py-5 bg-light">
+        <div class="container py-4">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold mb-3">What Our Clients Say</h2>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 pb-5 pb-lg-0">
+                    <img class="img-fluid w-100 rounded shadow" src="{% static 'assets/img/testimonial.jpg' %}" alt="Happy Patient">
+                </div>
+                <div class="col-lg-6">
+                    <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <div class="position-relative p-4 bg-white rounded shadow">
+                                    <i class="fa fa-quote-right fa-3x text-primary position-absolute" style="top: 10px; right: 20px;"></i>
+                                    <p class="mb-4">"I had an amazing experience! The specialists were professional, and the results were outstanding! The whole process from booking to treatment was seamless."</p>
+                                    <div class="d-flex align-items-center">
+                                        <img class="img-fluid rounded-circle" src="{% static 'assets/img/testimonial-1.jpg' %}" style="width: 60px; height: 60px;" alt="Testimonial 1">
+                                        <div class="ms-3">
+                                            <h5 class="mb-1">Jane Doe</h5>
+                                            <span class="text-muted">Marketing Executive</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <div class="position-relative p-4 bg-white rounded shadow">
+                                    <i class="fa fa-quote-right fa-3x text-primary position-absolute" style="top: 10px; right: 20px;"></i>
+                                    <p class="mb-4">"The BotoxCare platform made it so easy to find the right specialist for my needs. I'm thrilled with the results and will definitely be coming back for follow-up treatments!"</p>
+                                    <div class="d-flex align-items-center">
+                                        <img class="img-fluid rounded-circle" src="{% static 'assets/img/testimonial-2.jpg' %}" style="width: 60px; height: 60px;" alt="Testimonial 2">
+                                        <div class="ms-3">
+                                            <h5 class="mb-1">James O.</h5>
+                                            <span class="text-muted">Software Engineer</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <div class="position-relative p-4 bg-white rounded shadow">
+                                    <i class="fa fa-quote-right fa-3x text-primary position-absolute" style="top: 10px; right: 20px;"></i>
+                                    <p class="mb-4">"As someone who was nervous about trying Botox for the first time, I appreciated how the specialist took time to explain everything and make me feel comfortable. The results look so natural!"</p>
+                                    <div class="d-flex align-items-center">
+                                        <img class="img-fluid rounded-circle" src="{% static 'assets/img/testimonial-3.jpg' %}" style="width: 60px; height: 60px;" alt="Testimonial 3">
+                                        <div class="ms-3">
+                                            <h5 class="mb-1">Emily K.</h5>
+                                            <span class="text-muted">College Student</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Testimonial End -->
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="py-5">
+        <div class="container py-4">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold mb-3">How It Works</h2>
+                <p>Simple steps to your beauty transformation</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body text-center p-4">
+                            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 60px; height: 60px;">
+                                <h3 class="m-0">1</h3>
+                            </div>
+                            <h4 class="card-title">Book Appointment</h4>
+                            <p class="card-text">Choose a date and time that works for your schedule.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body text-center p-4">
+                            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 60px; height: 60px;">
+                                <h3 class="m-0">2</h3>
+                            </div>
+                            <h4 class="card-title">Consultation</h4>
+                            <p class="card-text">Meet with our specialists to discuss your needs and goals.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body text-center p-4">
+                            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 60px; height: 60px;">
+                                <h3 class="m-0">3</h3>
+                            </div>
+                            <h4 class="card-title">Treatment</h4>
+                            <p class="card-text">Receive your personalized treatment from our certified specialists.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>About Us</h5>
+                    <p>Connecting patients with top-tier Botox specialists</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/faq" class="text-white">FAQ</a></li>
+                        <li><a href="/privacy" class="text-white">Privacy Policy</a></li>
+                        <li><a href="/terms" class="text-white">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Contact</h5>
+                    <p>Email: support@botoxplatform.com</p>
+                    <p>Phone: (555) 123-4567</p>
+                    <div class="mt-3">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-3 text-center">
+                © 2025 BotoxCare. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary position-fixed rounded-circle" style="bottom: 30px; right: 30px;">
+        <i class="fa fa-angle-up"></i>
+    </a>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Additional JS libraries -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'lib/tempusdominus/js/moment.min.js' %}"></script>
+    <script src="{% static 'lib/tempusdominus/js/moment-timezone.min.js' %}"></script>
+    <script src="{% static 'lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js' %}"></script>
+
+    <!-- Custom JavaScript -->
+    <script>
+        // Activate Bootstrap tooltips
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
+        // Back to top button
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 300) {
+                $('.back-to-top').fadeIn('slow');
+            } else {
+                $('.back-to-top').fadeOut('slow');
+            }
+        });
+        $('.back-to-top').click(function () {
+            $('html, body').animate({scrollTop: 0}, 500, 'easeInOutExpo');
+            return false;
+        });
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

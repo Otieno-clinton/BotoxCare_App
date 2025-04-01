@@ -1,0 +1,30 @@
+{% extends "base_admin.html" %}
+{% block content %}
+
+<div class="container mt-4">
+    <h2>Edit Clinic Details</h2>
+    <p>Update your clinic information below.</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="clinic_name" class="form-label">Clinic Name</label>
+            <input type="text" class="form-control" id="clinic_name" name="clinic_name" value="{{ clinic_admin.clinic_name }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="phone_number" class="form-label">Phone Number</label>
+            <input type="text" class="form-control" id="phone_number" name="phone_number" value="{{ clinic_admin.phone_number }}">
+        </div>
+
+        <div class="mb-3">
+            <label for="address" class="form-label">Address</label>
+            <textarea class="form-control" id="address" name="address" rows="3" required>{{ clinic_admin.address }}</textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <a href="{% url 'clinic_admin_dashboard' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Specialist Profile</h2>
+    <form method="post">
+        {% csrf_token %}
+
+        <label>Full Name:</label>
+        <input type="text" name="full_name" value="{{ specialist.full_name }}" required><br>
+
+        <label>Specialty:</label>
+        <select name="specialty" required>
+            <option value="Dermatologist" {% if specialist.specialty == "Dermatologist" %}selected{% endif %}>Dermatologist</option>
+            <option value="Plastic Surgeon" {% if specialist.specialty == "Plastic Surgeon" %}selected{% endif %}>Plastic Surgeon</option>
+            <option value="Cosmetic Specialist" {% if specialist.specialty == "Cosmetic Specialist" %}selected{% endif %}>Cosmetic Specialist</option>
+            <option value="Licensed Professional" {% if specialist.specialty == "Licensed Professional" %}selected{% endif %}>Licensed Professional</option>
+        </select><br>
+
+        <label>Professional Credentials:</label>
+        <textarea name="credentials" required>{{ specialist.credentials }}</textarea><br>
+
+        <label>Years of Experience:</label>
+        <input type="number" name="experience_years" min="0" value="{{ specialist.experience_years }}" required><br>
+
+        <label>Short Bio:</label>
+        <textarea name="bio">{{ specialist.bio }}</textarea><br>
+
+        <label>Available Days:</label>
+        <input type="text" name="available_days" value="{{ specialist.available_days }}" required><br>
+
+        <label>Working Hours:</label>
+        <input type="text" name="working_hours" value="{{ specialist.working_hours }}" required><br>
+
+        <label>Consultation Fee (USD):</label>
+        <input type="number" name="consultation_fee" step="0.01" value="{{ specialist.consultation_fee }}" required><br>
+
+        <label>Accept Virtual Consultations:</label>
+        <input type="checkbox" name="accepts_virtual_consultations" {% if specialist.accepts_virtual_consultations %}checked{% endif %}><br>
+
+        <label>Accept In-Person Consultations:</label>
+        <input type="checkbox" name="accepts_in_person_consultations" {% if specialist.accepts_in_person_consultations %}checked{% endif %}><br>
+
+        <button type="submit" class="btn btn-success">Update Profile</button>
+    </form>
+</div>
+{% endblock %}

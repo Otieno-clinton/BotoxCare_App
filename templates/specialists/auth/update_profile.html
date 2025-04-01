@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow p-4">
+                <h2 class="text-center mb-4">Register</h2>
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" id="username" name="username" class="form-control" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" id="email" name="email" class="form-control" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="password1" class="form-label">Password</label>
+                        <input type="password" id="password1" name="password1" class="form-control" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="password2" class="form-label">Confirm Password</label>
+                        <input type="password" id="password2" name="password2" class="form-control" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="medical_history" class="form-label">Medical History (Optional)</label>
+                        <textarea id="medical_history" name="medical_history" class="form-control" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" id="terms" name="terms" class="form-check-input" required>
+                        <label for="terms" class="form-check-label">I agree to the Terms and Conditions</label>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary w-100">Register</button>
+                </form>
+                <p class="text-center mt-3">Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

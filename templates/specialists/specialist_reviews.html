@@ -1,0 +1,21 @@
+{% extends "base_specialist.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>All Reviews & Feedback</h2>
+
+    {% if reviews %}
+        <div class="list-group">
+            {% for review in reviews %}
+                <div class="list-group-item">
+                    <h5>{{ review.user.username }} - {{ review.treatment.name }}</h5>
+                    <p>Rating: ⭐{{ review.rating }}</p>
+                    <p>{{ review.content }}</p>
+                    <small class="text-muted">Submitted on {{ review.created_at|date:"M d, Y" }}</small>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No reviews yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

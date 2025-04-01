@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Clinic Admin Registration - BotoxCare Platform</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f6f9;
+        }
+
+        .text-primary {
+            color: #F2784B !important;
+        }
+
+        .bg-primary {
+            background-color: #1d2434 !important;
+        }
+
+        .btn-primary {
+            background-color: #F2784B;
+            border-color: #F2784B;
+        }
+
+        .btn-primary:hover {
+            background-color: #e16a3e;
+            border-color: #e16a3e;
+        }
+
+        .border-primary {
+            border-color: #F2784B !important;
+        }
+
+        .register-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 0;
+        }
+
+        .register-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .register-header {
+            background: linear-gradient(135deg, #F2784B 0%, #e16a3e 100%);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .register-body {
+            padding: 2rem;
+        }
+
+        .form-control {
+            border-radius: 8px;
+            padding: 0.75rem;
+            background-color: #f8f9fa;
+            border: 1px solid #ced4da;
+        }
+
+        .form-control:focus {
+            background-color: white;
+            border-color: #F2784B;
+            box-shadow: 0 0 0 0.2rem rgba(242, 120, 75, 0.25);
+        }
+
+        .btn-register {
+            background-color: #F2784B;
+            border: none;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-register:hover {
+            transform: translateY(-3px);
+            background-color: #e16a3e;
+        }
+
+        .password-container {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #6c757d;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+        }
+
+        .alert {
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white py-3 shadow-sm">
+        <div class="container">
+            <a href="/" class="navbar-brand">
+                <h2 class="m-0 text-primary"><span class="text-dark">Botox</span>Care</h2>
+            </a>
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav ms-auto py-0">
+                    <a href="/" class="nav-item nav-link">Home</a>
+                    <a href="{% url 'services' %}" class="nav-item nav-link">Our services</a>
+                    <a href="#treatments" class="nav-item nav-link">Treatments</a>
+                    <a href="#specialists" class="nav-item nav-link">Our Specialists</a>
+                    <a href="{% url 'about' %}" class="nav-item nav-link">About</a>
+                </div>
+                <a href="{% url 'clinic_admin_login' %}" class="btn btn-primary ms-3">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Registration Section -->
+    <div class="register-container">
+        <div class="card register-card">
+            <div class="register-header">
+                <h2 class="mb-0">Clinic Admin Registration</h2>
+                <p class="text-white-50 mb-0">Register your clinic on the BotoxCare Platform</p>
+            </div>
+            <div class="register-body">
+                {% if messages %}
+                <div class="alert alert-info">
+                    <ul class="mb-0 ps-3">
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                <form id="clinicAdminRegistrationForm" method="POST" action="" novalidate>
+                    {% csrf_token %}
+
+                    <!-- Account Information Section -->
+                    <h5 class="mb-3">Account Information</h5>
+
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            class="form-control"
+                            value="{{ form_data.username }}"
+                            required
+                            minlength="4"
+                            maxlength="20"
+                            pattern="^[a-zA-Z0-9_]+$"
+                            title="Username must be 4-20 characters, only letters, numbers, and underscore"
+                            placeholder="Enter a username"
+                        >
+                        <div class="error-message" id="username-error"></div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            class="form-control"
+                            value="{{ form_data.email }}"
+                            required
+                            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                            placeholder="Enter your email address"
+                        >
+                        <div class="error-message" id="email-error"></div>
+                    </div>
+
+                    <div class="mb-3 password-container">
+                        <label for="password" class="form-label">Password</label>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            class="form-control"
+                            required
+                            minlength="8"
+                            placeholder="Create a password"
+                        >
+                        <span class="password-toggle" id="passwordToggle">
+                            <i class="fas fa-eye-slash" id="passwordIcon"></i>
+                        </span>
+                        <div class="password-strength mt-2">
+                            <div class="password-strength-bar" id="password-strength"></div>
+                        </div>
+                        <small class="text-muted">Use at least 8 characters with a mix of letters, numbers, and symbols</small>
+                        <div class="error-message" id="password-error"></div>
+                    </div>
+
+                    <!-- Clinic Information Section -->
+                    <h5 class="mt-4 mb-3">Clinic Information</h5>
+
+                    <div class="mb-3">
+                        <label for="clinic_name" class="form-label">Clinic Name</label>
+                        <input
+                            type="text"
+                            id="clinic_name"
+                            name="clinic_name"
+                            class="form-control"
+                            value="{{ form_data.clinic_name }}"
+                            required
+                            placeholder="Enter your clinic name"
+                        >
+                        <div class="error-message" id="clinic_name-error"></div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="phone_number" class="form-label">Phone Number</label>
+                        <input
+                            type="tel"
+                            id="phone_number"
+                            name="phone_number"
+                            class="form-control"
+                            value="{{ form_data.phone_number }}"
+                            placeholder="Enter your clinic phone number"
+                        >
+                        <div class="error-message" id="phone_number-error"></div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Clinic Address</label>
+                        <textarea
+                            id="address"
+                            name="address"
+                            class="form-control"
+                            rows="3"
+                            placeholder="Enter your clinic's full address"
+                        >{{ form_data.address }}</textarea>
+                        <div class="error-message" id="address-error"></div>
+                    </div>
+
+                    <div class="mb-3 form-check">
+                        <input
+                            type="checkbox"
+                            id="terms"
+                            name="terms"
+                            class="form-check-input"
+                            required
+                        >
+                        <label for="terms" class="form-check-label">
+                            I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal" class="text-primary">Terms and Conditions</a>
+                        </label>
+                        <div class="error-message" id="terms-error"></div>
+                    </div>
+
+                    <button type="submit" class="btn btn-register text-white w-100 py-2">
+                        Register as Clinic Admin
+                    </button>
+
+                    <div class="text-center mt-3">
+                        <p class="mb-0">Already have an account? <a href="{% url 'clinic_admin_login' %}" class="text-primary">Login here</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms and Conditions Modal -->
+    <div class="modal fade" id="termsModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Clinic Admin Terms and Conditions</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>By registering as a clinic administrator, you agree to our platform's terms of service...</p>
+                    <!-- Add full terms content here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>About Us</h5>
+                    <p>Connecting patients with top-tier Botox specialists</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/faq" class="text-white">FAQ</a></li>
+                        <li><a href="/privacy" class="text-white">Privacy Policy</a></li>
+                        <li><a href="/terms" class="text-white">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Contact</h5>
+                    <p>Email: support@botoxplatform.com</p>
+                    <p>Phone: (555) 123-4567</p>
+                    <div class="mt-3">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-3 text-center">
+                © 2025 BotoxCare. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('clinicAdminRegistrationForm');
+        const username = document.getElementById('username');
+        const email = document.getElementById('email');
+        const password = document.getElementById('password');
+        const clinicName = document.getElementById('clinic_name');
+        const phoneNumber = document.getElementById('phone_number');
+        const terms = document.getElementById('terms');
+        const passwordStrength = document.getElementById('password-strength');
+        const passwordToggle = document.getElementById('passwordToggle');
+        const passwordIcon = document.getElementById('passwordIcon');
+
+        // Password visibility toggle
+        passwordToggle.addEventListener('click', function() {
+            if (password.type === 'password') {
+                password.type = 'text';
+                passwordIcon.classList.replace('fa-eye-slash', 'fa-eye');
+            } else {
+                password.type = 'password';
+                passwordIcon.classList.replace('fa-eye', 'fa-eye-slash');
+            }
+        });
+
+        // Password Strength Indicator
+        password.addEventListener('input', function() {
+            const passwordValue = this.value;
+            let strength = 0;
+
+            if (passwordValue.length >= 8) strength++;
+            if (passwordValue.match(/[a-z]+/)) strength++;
+            if (passwordValue.match(/[A-Z]+/)) strength++;
+            if (passwordValue.match(/[0-9]+/)) strength++;
+            if (passwordValue.match(/[$@#&!]+/)) strength++;
+
+            passwordStrength.style.width = `${strength * 20}%`;
+            passwordStrength.className = 'password-strength-bar ';
+
+            if (strength <= 1) passwordStrength.classList.add('password-strength-weak');
+            else if (strength <= 3) passwordStrength.classList.add('password-strength-medium');
+            else passwordStrength.classList.add('password-strength-strong');
+        });
+
+        // Client-side form validation
+        form.addEventListener('submit', function(e) {
+            let isValid = true;
+
+            // Reset previous error messages
+            ['username', 'email', 'password', 'clinic_name', 'phone_number', 'terms'].forEach(field => {
+                const errorEl = document.getElementById(`${field}-error`);
+                if (errorEl) {
+                    errorEl.textContent = '';
+                }
+            });
+
+            // Username validation
+            if (!username.value.trim()) {
+                document.getElementById('username-error').textContent = 'Username is required';
+                isValid = false;
+            } else if (username.value.length < 4 || username.value.length > 20) {
+                document.getElementById('username-error').textContent = 'Username must be 4-20 characters';
+                isValid = false;
+            } else if (!/^[a-zA-Z0-9_]+$/.test(username.value)) {
+                document.getElementById('username-error').textContent = 'Username can only contain letters, numbers, and underscores';
+                isValid = false;
+            }
+
+            // Email validation
+            if (!email.value.trim()) {
+                document.getElementById('email-error').textContent = 'Email is required';
+                isValid = false;
+            } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email.value)) {
+                document.getElementById('email-error').textContent = 'Invalid email format';
+                isValid = false;
+            }
+
+            // Password validation
+            if (!password.value) {
+                document.getElementById('password-error').textContent = 'Password is required';
+                isValid = false;
+            } else if (password.value.length < 8) {
+                document.getElementById('password-error').textContent = 'Password must be at least 8 characters';
+                isValid = false;
+            }
+
+            // Clinic name validation
+            if (!clinicName.value.trim()) {
+                document.getElementById('clinic_name-error').textContent = 'Clinic name is required';
+                isValid = false;
+            }
+
+            // Terms agreement validation
+            if (!terms.checked) {
+                document.getElementById('terms-error').textContent = 'You must agree to the terms and conditions';
+                isValid = false;
+            }
+
+            if (!isValid) {
+                e.preventDefault();
+            }
+        });
+    });
+    </script>
+</body>
+</html>

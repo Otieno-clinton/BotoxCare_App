@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow p-4">
+                <h2 class="text-center mb-4">{{ profile.user.username }}'s Profile</h2>
+
+                <ul class="list-group">
+                    <li class="list-group-item"><strong>Email:</strong> {{ profile.user.email }}</li>
+                    <li class="list-group-item"><strong>Phone:</strong> {{ profile.phone|default:"Not provided" }}</li>
+                    <li class="list-group-item"><strong>Address:</strong> {{ profile.address|default:"Not provided" }}</li>
+                    <li class="list-group-item"><strong>Date of Birth:</strong> {{ profile.date_of_birth|default:"Not provided" }}</li>
+                </ul>
+
+                <div class="text-center mt-3">
+                    <a href="{% url 'update_profile' %}" class="btn btn-primary">Edit Profile</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

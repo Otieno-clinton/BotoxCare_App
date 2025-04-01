@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center">{{ treatment.name }}</h2>
+    
+    <div class="card">
+        <div class="card-body">
+            <p><strong>Description:</strong> {{ treatment.description }}</p>
+            <p><strong>Price:</strong> ${{ treatment.price }}</p>
+            <p><strong>Duration:</strong> {{ treatment.duration }}</p>
+
+            {% if treatment.risks %}
+                <p><strong>Risks:</strong> {{ treatment.risks }}</p>
+            {% endif %}
+
+            {% if treatment.precautions %}
+                <p><strong>Precautions:</strong> {{ treatment.precautions }}</p>
+            {% endif %}
+
+            {% if treatment.aftercare %}
+                <p><strong>Aftercare:</strong> {{ treatment.aftercare }}</p>
+            {% endif %}
+
+            <a href="{% url 'treatment_list' %}" class="btn btn-secondary">Back to Treatments</a>
+            <a href="{% url 'submit_review' treatment.id %}" class="btn btn-primary">Leave a Review</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

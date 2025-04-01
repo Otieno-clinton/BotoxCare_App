@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Specialist Payments - BotoxCare Platform</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #F2784B;
+            --primary-dark: #e16a3e;
+            --secondary-color: #1d2434;
+            --light-bg: #f8f9fa;
+            --card-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            --hover-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.2);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+        }
+
+        .text-primary {
+            color: var(--primary-color) !important;
+        }
+
+        .bg-primary {
+            background-color: var(--primary-color) !important;
+        }
+
+        .bg-secondary {
+            background-color: var(--secondary-color) !important;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            box-shadow: 0 2px 6px rgba(242, 120, 75, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(242, 120, 75, 0.5);
+        }
+
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 8px rgba(242, 120, 75, 0.3);
+        }
+
+        .btn-success {
+            background-color: #2ecc71;
+            border-color: #2ecc71;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 6px rgba(46, 204, 113, 0.4);
+        }
+
+        .btn-success:hover {
+            background-color: #27ae60;
+            border-color: #27ae60;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(46, 204, 113, 0.5);
+        }
+
+        .btn-danger {
+            background-color: #e74c3c;
+            border-color: #e74c3c;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 6px rgba(231, 76, 60, 0.4);
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+            border-color: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(231, 76, 60, 0.5);
+        }
+
+        .navbar {
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar .active {
+            color: var(--primary-color) !important;
+            font-weight: 600;
+            position: relative;
+        }
+
+        .navbar .active:after {
+            content: '';
+            position: absolute;
+            width: 60%;
+            height: 3px;
+            background-color: var(--primary-color);
+            bottom: -5px;
+            left: 20%;
+            border-radius: 10px;
+        }
+
+        .dashboard-header {
+            background-color: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .payments-card {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            border: none;
+        }
+
+        .payments-filter {
+            padding: 20px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            background-color: rgba(242, 120, 75, 0.03);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table th {
+            font-weight: 600;
+            color: var(--secondary-color);
+            border-bottom-width: 1px;
+        }
+
+        .table td {
+            vertical-align: middle;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 0.85rem;
+        }
+
+        .status-pending {
+            background-color: rgba(241, 196, 15, 0.15);
+            color: #f39c12;
+        }
+
+        .status-completed {
+            background-color: rgba(46, 204, 113, 0.15);
+            color: #2ecc71;
+        }
+
+        .status-cancelled {
+            background-color: rgba(231, 76, 60, 0.15);
+            color: #e74c3c;
+        }
+
+        .status-processing {
+            background-color: rgba(52, 152, 219, 0.15);
+            color: #3498db;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+
+        footer {
+            background-color: var(--secondary-color);
+            margin-top: 50px;
+        }
+
+        /* Pagination styling */
+        .pagination {
+            margin-bottom: 0;
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .pagination .page-link {
+            color: var(--primary-color);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #ddd;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ccc;
+        }
+
+        /* Stats Card */
+        .stats-card {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: var(--card-shadow);
+            padding: 20px;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--hover-shadow);
+        }
+
+        .stats-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        .stats-card h3 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .stats-card p {
+            color: #6c757d;
+            margin-bottom: 0;
+        }
+
+        /* Chart Card */
+        .chart-card {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: var(--card-shadow);
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .chart-card h5 {
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white py-3 sticky-top">
+        <div class="container">
+            <a href="/" class="navbar-brand d-flex align-items-center">
+                <h2 class="m-0 text-primary"><span class="text-dark">Botox</span>Care</h2>
+            </a>
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav ms-auto py-0">
+                    <a href="{% url 'specialist_dashboard' %}" class="nav-item nav-link mx-2">Dashboard</a>
+                    <a href="{% url 'specialist_appointments' %}" class="nav-item nav-link mx-2">Appointments</a>
+                    <a href="{% url 'specialist_consultations' %}" class="nav-item nav-link mx-2">Consultations</a>
+                    <a href="{% url 'specialist_payments' %}" class="nav-item nav-link active mx-2">Payments</a>
+                    <a href="{% url 'specialist_reviews' %}" class="nav-item nav-link mx-2">Reviews</a>
+                </div>
+                <div class="dropdown ms-4">
+                    <a class="btn btn-outline-primary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user-circle me-1"></i> {{ user.username }}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{% url 'specialist_logout' %}"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Message Alerts -->
+    {% if messages %}
+    <div id="message-container">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Main Content -->
+    <div class="container py-4">
+        <!-- Dashboard Header -->
+        <div class="dashboard-header">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h2 class="fw-bold mb-0"><i class="fas fa-wallet me-2 text-primary"></i>Payments & Earnings</h2>
+                    <p class="text-muted mt-2 mb-0">Monitor your payment history and earnings</p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <div class="d-flex justify-content-md-end mt-3 mt-md-0">
+                        <div class="text-end">
+                            <p class="mb-0 text-muted">Current Date</p>
+                            <p class="mb-0 fw-bold">{% now "F j, Y" %}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+        </div>
+
+
+
+        <!-- Payments Card -->
+        <div class="payments-card mb-4">
+            <!-- Filter Section -->
+            <div class="payments-filter">
+                <div class="row">
+                    <div class="col-md-4 mb-3 mb-md-0">
+                        <input type="text" class="form-control" placeholder="Search by amount or date...">
+                    </div>
+                    <div class="col-md-3 mb-3 mb-md-0">
+                        <input type="date" class="form-control">
+                    </div>
+                    <div class="col-md-5 d-flex justify-content-md-end">
+                        <select class="form-select me-2" style="max-width: 140px;">
+                            <option value="all">All Status</option>
+                            <option value="completed">Completed</option>
+                            <option value="pending">Pending</option>
+                            <option value="processing">Processing</option>
+                        </select>
+                        <button class="btn btn-outline-primary">
+                            <i class="fas fa-filter me-1"></i> Filter
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table Section -->
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Treatment</th>
+                            <th>Client</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if payments %}
+                            {% for payment in payments %}
+                                <tr>
+                                    <td>{{ payment.treatment }}</td>
+                                    <td>
+                                        <div class="client-info">
+                                            <div class="client-avatar">
+                                                {{ payment.client|slice:":1"|upper }}
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-0">{{ payment.client }}</h6>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>${{ payment.amount }}</td>
+                                    <td>{{ payment.date }}</td>
+                                    <td>
+                                        {% if payment.status == 'Pending' %}
+                                            <span class="status-badge status-pending">Pending</span>
+                                        {% elif payment.status == 'Completed' %}
+                                            <span class="status-badge status-completed">Completed</span>
+                                        {% elif payment.status == 'Processing' %}
+                                            <span class="status-badge status-processing">Processing</span>
+                                        {% elif payment.status == 'Cancelled' %}
+                                            <span class="status-badge status-cancelled">Cancelled</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-file-invoice-dollar me-1"></i>Invoice
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="6">
+                                    <div class="empty-state">
+                                        <i class="fas fa-file-invoice-dollar text-muted"></i>
+                                        <h5>No Payments Found</h5>
+                                        <p class="text-muted">No payment records have been added yet.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            {% if payments %}
+                <div class="d-flex justify-content-between align-items-center p-3 border-top">
+                    <div>
+                        <span class="text-muted">Showing {{ payments|length }} of {{ total_payments }} payments</span>
+                    </div>
+                    <nav>
+                        <ul class="pagination">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                            </li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-secondary text-white py-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h5 class="mb-0">BotoxCare Specialist Portal</h5>
+                    <p class="mb-0 mt-2">Managing your appointments and clients with ease.</p>
+                </div>
+                <div class="col-md-6 text-md-end mt-3 mt-md-0">
+                    <p class="mb-1"><i class="fas fa-headset me-2"></i>Need help? Contact <a href="mailto:support@botoxcare.com" class="text-white text-decoration-underline">support@botoxcare.com</a></p>
+                    <p class="mb-0">© 2025 BotoxCare. All Rights Reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

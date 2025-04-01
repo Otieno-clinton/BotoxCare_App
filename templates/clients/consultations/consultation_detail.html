@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">My Virtual Consultations</h2>
+
+    {% if consultations %}
+        <ul class="list-group">
+            {% for consultation in consultations %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>Consultation with Dr. {{ consultation.specialist.username }}</strong><br>
+                        Date: {{ consultation.date|date:"F j, Y, g:i A" }}<br>
+                        Status: <span class="badge {% if consultation.status == 'pending' %}bg-warning{% else %}bg-success{% endif %}">{{ consultation.status|title }}</span>
+                    </div>
+                    {% if consultation.status == 'pending' %}
+                        <a href="{% url 'consultation_detail' consultation.id %}" class="btn btn-primary btn-sm">Join</a>
+                    {% else %}
+                        <span class="text-muted">Completed</span>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <div class="alert alert-info">You have no scheduled consultations.</div>
+    {% endif %}
+
+    <h3 class="mt-5">Available Specialists</h3>
+    {% if specialists %}
+        <ul class="list-group">
+            {% for specialist in specialists %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>Dr. {{ specialist.username }}</span>
+                    <a href="{% url 'start_consultation' specialist.id %}" class="btn btn-success btn-sm">Start Consultation</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <div class="alert alert-warning">No specialists available at the moment.</div>
+    {% endif %}
+</div>
+{% endblock %}

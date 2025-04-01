@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Client Reviews</h2>
+    {% for review in reviews %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5>{{ review.user.username }}</h5>
+            <p>Rating: ⭐{{ review.rating }}/5</p>
+            <p>{{ review.content }}</p>
+        </div>
+    </div>
+    {% empty %}
+    <p>No reviews available.</p>
+    {% endfor %}
+</div>
+{% endblock %}

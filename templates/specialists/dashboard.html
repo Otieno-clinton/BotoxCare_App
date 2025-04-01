@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Specialist Dashboard - BotoxCare Platform</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #F2784B;
+            --primary-dark: #e16a3e;
+            --secondary-color: #1d2434;
+            --light-bg: #f8f9fa;
+            --card-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            --hover-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.2);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+        }
+
+        .text-primary {
+            color: var(--primary-color) !important;
+        }
+
+        .bg-primary {
+            background-color: var(--primary-color) !important;
+        }
+
+        .bg-secondary {
+            background-color: var(--secondary-color) !important;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            box-shadow: 0 2px 6px rgba(242, 120, 75, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(242, 120, 75, 0.5);
+        }
+
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 8px rgba(242, 120, 75, 0.3);
+        }
+
+        .navbar {
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar .active {
+            color: var(--primary-color) !important;
+            font-weight: 600;
+            position: relative;
+        }
+
+        .navbar .active:after {
+            content: '';
+            position: absolute;
+            width: 60%;
+            height: 3px;
+            background-color: var(--primary-color);
+            bottom: -5px;
+            left: 20%;
+            border-radius: 10px;
+        }
+
+        .dashboard-header {
+            background-color: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .stat-card {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            border: none;
+            height: 100%;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-7px);
+            box-shadow: var(--hover-shadow);
+        }
+
+        .stat-card .card-top {
+            padding: 12px 20px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .stat-card .card-icon {
+            display: inline-flex;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+
+        .stat-icon-appointments {
+            background-color: rgba(52, 152, 219, 0.15);
+            color: #3498db;
+        }
+
+        .stat-icon-consultations {
+            background-color: rgba(46, 204, 113, 0.15);
+            color: #2ecc71;
+        }
+
+        .stat-icon-earnings {
+            background-color: rgba(241, 196, 15, 0.15);
+            color: #f1c40f;
+        }
+
+        .stat-icon-reviews {
+            background-color: rgba(242, 120, 75, 0.15);
+            color: #F2784B;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            display: block;
+            margin: 10px 0;
+        }
+
+        .reviews-card {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            border: none;
+        }
+
+        .review-item {
+            padding: 20px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+        }
+
+        .review-item:hover {
+            background-color: rgba(242, 120, 75, 0.03);
+        }
+
+        .review-item:last-child {
+            border-bottom: none;
+        }
+
+        .rating-stars {
+            color: #f1c40f;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--secondary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+
+        footer {
+            background-color: var(--secondary-color);
+            margin-top: 50px;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #ddd;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ccc;
+        }
+
+        .today-appointments {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 25px;
+        }
+
+        .appointment-item {
+            padding: 15px;
+            border-left: 4px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .appointment-upcoming {
+            border-left-color: #3498db;
+        }
+
+        .appointment-completed {
+            border-left-color: #2ecc71;
+        }
+
+        .appointment-cancelled {
+            border-left-color: #e74c3c;
+        }
+
+        .appointment-time {
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white py-3 sticky-top">
+        <div class="container">
+            <a href="/" class="navbar-brand d-flex align-items-center">
+                <h2 class="m-0 text-primary"><span class="text-dark">Botox</span>Care</h2>
+            </a>
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav ms-auto py-0">
+                    <a href="{% url 'specialist_dashboard' %}" class="nav-item nav-link active mx-2">Dashboard</a>
+                    <a href="{% url 'specialist_appointments' %}" class="nav-item nav-link mx-2">Appointments</a>
+                    <a href="{% url 'specialist_consultations' %}" class="nav-item nav-link mx-2">Consultations</a>
+                    <a href="{% url 'specialist_payments' %}" class="nav-item nav-link mx-2">Payments</a>
+                    <a href="{% url 'specialist_reviews' %}" class="nav-item nav-link mx-2">Reviews</a>
+                </div>
+                <div class="dropdown ms-4">
+                    <a class="btn btn-outline-primary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user-circle me-1"></i> {{ user.username }}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="{% url 'specialist_profile' specialist.id %}">
+<i class="fas fa-user-edit me-2"></i>Edit Profile</a></li>
+{#                        <li><a class="dropdown-item" href="{% url 'specialist_settings' %}"><i class="fas fa-cog me-2"></i>Settings</a></li>#}
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{% url 'specialist_logout' %}"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container py-4">
+        <!-- Dashboard Header -->
+        <div class="dashboard-header">
+            <div class="row align-items-center">
+                <div class="col-md-7">
+                    <h2 class="fw-bold mb-0"><i class="fas fa-tachometer-alt me-2 text-primary"></i>Specialist Dashboard</h2>
+                    <p class="text-muted mt-2 mb-0">Welcome back, <span class="fw-bold text-primary">Dr. {{ user.username }} {{ user.last_name }}</span></p>
+                </div>
+                <div class="col-md-5 text-md-end">
+                    <div class="d-flex justify-content-md-end mt-3 mt-md-0">
+                        <div class="me-3 text-end">
+                            <p class="mb-0 text-muted">Current Date</p>
+                            <p class="mb-0 fw-bold">{% now "F j, Y" %}</p>
+                        </div>
+                        <a href="{% url 'specialist_appointments' %}" class="btn btn-primary px-4">
+                            <i class="fas fa-calendar-plus me-2"></i>Manage Schedule
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Row -->
+        <div class="row g-4 mb-4">
+            <!-- Appointments Card -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card stat-card">
+                    <div class="card-body p-0">
+                        <div class="card-top d-flex align-items-center">
+                            <div class="card-icon stat-icon-appointments">
+                                <i class="fas fa-calendar-check fa-lg"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-0 fw-bold">Appointments</h5>
+                                <p class="text-muted mb-0 small">Today & Upcoming</p>
+                            </div>
+                        </div>
+                        <div class="p-4 text-center">
+                            <span class="stat-value">{{ upcoming_appointments_count }}</span>
+                            <span class="text-muted d-block mb-3">scheduled appointments</span>
+                            <a href="{% url 'specialist_appointments' %}" class="btn btn-primary w-100">
+                                <i class="fas fa-calendar me-2"></i>Manage
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Virtual Consultations Card -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card stat-card">
+                    <div class="card-body p-0">
+                        <div class="card-top d-flex align-items-center">
+                            <div class="card-icon stat-icon-consultations">
+                                <i class="fas fa-video fa-lg"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-0 fw-bold">Consultations</h5>
+                                <p class="text-muted mb-0 small">Virtual Sessions</p>
+                            </div>
+                        </div>
+                        <div class="p-4 text-center">
+                            <span class="stat-value">{{ virtual_consultations_count }}</span>
+                            <span class="text-muted d-block mb-3">scheduled consultations</span>
+                            <a href="{% url 'specialist_consultations' %}" class="btn btn-primary w-100">
+                                <i class="fas fa-video me-2"></i>Manage
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Earnings Card -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card stat-card">
+                    <div class="card-body p-0">
+                        <div class="card-top d-flex align-items-center">
+                            <div class="card-icon stat-icon-earnings">
+                                <i class="fas fa-money-bill-wave fa-lg"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-0 fw-bold">Earnings</h5>
+                                <p class="text-muted mb-0 small">Current Month</p>
+                            </div>
+                        </div>
+                        <div class="p-4 text-center">
+                            <span class="stat-value">KSh {{ total_earnings }}</span>
+                            <span class="text-muted d-block mb-3">total earnings</span>
+                            <a href="{% url 'specialist_payments' %}" class="btn btn-primary w-100">
+                                <i class="fas fa-file-invoice-dollar me-2"></i>View Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reviews Card -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card stat-card">
+                    <div class="card-body p-0">
+                        <div class="card-top d-flex align-items-center">
+                            <div class="card-icon stat-icon-reviews">
+                                <i class="fas fa-star fa-lg"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-0 fw-bold">Reviews</h5>
+                                <p class="text-muted mb-0 small">Client Feedback</p>
+                            </div>
+                        </div>
+                        <div class="p-4 text-center">
+                            <span class="stat-value">{{ reviews_count }}</span>
+                            <span class="text-muted d-block mb-3">new reviews</span>
+                            <a href="{% url 'specialist_reviews' %}" class="btn btn-primary w-100">
+                                <i class="fas fa-comment-dots me-2"></i>View All
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Today's Appointments -->
+        <div class="today-appointments mb-4">
+            <div class="d-flex justify-content-between align-items-center p-4 border-bottom">
+                <h4 class="fw-bold mb-0"><i class="fas fa-calendar-day me-2 text-primary"></i>Today's Schedule</h4>
+                <a href="{% url 'specialist_appointments' %}" class="btn btn-sm btn-outline-primary">View All</a>
+            </div>
+
+            <div class="p-3">
+                {% if today_appointments %}
+                    {% for appointment in today_appointments|slice:":3" %}
+                        <div class="appointment-item appointment-upcoming mb-2 d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <div class="user-avatar me-3">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1">{{ appointment.client.get_full_name }}</h6>
+                                    <p class="mb-0 small text-muted">{{ appointment.treatment.name }}</p>
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <span class="appointment-time d-block">{{ appointment.start_time|time:"g:i A" }}</span>
+                                <span class="badge bg-primary">{{ appointment.duration }} min</span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state py-4">
+                        <i class="fas fa-calendar-day text-muted mb-3" style="font-size: 2.5rem;"></i>
+                        <p class="mb-0">No appointments scheduled for today</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Reviews Section -->
+        <div class="card reviews-card">
+            <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                <h4 class="mb-0 fw-bold"><i class="fas fa-comment-dots me-2 text-primary"></i>Recent Reviews & Feedback</h4>
+                <a href="{% url 'specialist_reviews' %}" class="btn btn-sm btn-outline-primary">View All</a>
+            </div>
+            <div class="card-body p-0">
+                {% if reviews %}
+                    {% for review in reviews %}
+                        <div class="review-item">
+                            <div class="review-header">
+                                <div class="d-flex align-items-center">
+                                    <div class="user-avatar">
+                                        {{ review.user.username|slice:":1"|upper }}
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0">{{ review.user.username }}</h6>
+                                        <small class="text-muted">{{ review.treatment.name }}</small>
+                                    </div>
+                                </div>
+                                <small class="text-muted">{{ review.created_at|date:"M d, Y" }}</small>
+                            </div>
+                            <div class="rating-stars mb-2">
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= review.rating %}
+                                        <i class="fas fa-star"></i>
+                                    {% else %}
+                                        <i class="far fa-star"></i>
+                                    {% endif %}
+                                {% endfor %}
+                                <span class="ms-2 text-muted">({{ review.rating }}/5)</span>
+                            </div>
+                            <p class="mb-0">{{ review.content }}</p>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">
+                        <i class="fas fa-comment-slash"></i>
+                        <h5>No Reviews Yet</h5>
+                        <p class="text-muted">When clients leave reviews, they'll appear here.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-secondary text-white py-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h5 class="mb-0">BotoxCare Specialist Portal</h5>
+                    <p class="mb-0 mt-2">Managing your appointments and clients with ease.</p>
+                </div>
+                <div class="col-md-6 text-md-end mt-3 mt-md-0">
+                    <p class="mb-1"><i class="fas fa-headset me-2"></i>Need help? Contact <a href="mailto:support@botoxcare.com" class="text-white text-decoration-underline">support@botoxcare.com</a></p>
+                    <p class="mb-0">© 2025 BotoxCare. All Rights Reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

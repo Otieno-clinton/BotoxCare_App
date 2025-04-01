@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Appointments</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Client</th>
+                <th>Treatment</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for appointment in appointments %}
+<tr>
+    <td>{{ appointment.user.username }}</td>
+    <td>{{ appointment.treatment.name }}</td>
+    <td>{{ appointment.date }}</td>
+    <td>
+        {% if appointment.status == "Approved" %}
+            <span class="badge bg-success">Approved</span>
+        {% elif appointment.status == "Declined" %}
+            <span class="badge bg-danger">Declined</span>
+        {% else %}
+            <span class="badge bg-warning">Pending</span>
+        {% endif %}
+    </td>
+    <td>
+        {% if appointment.status == "Pending" %}
+            <form method="post" action="{% url 'approve_appointment' appointment.id %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-sm btn-success">Approve</button>
+            </form>
+
+            <form method="post" action="{% url 'decline_appointment' appointment.id %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-sm btn-danger">Decline</button>
+            </form>
+        {% else %}
+            <span class="text-muted">No Actions</span>
+        {% endif %}
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="5" class="text-center">No appointments scheduled.</td>
+</tr>
+{% endfor %}
+
+        </tbody>
+    </table>
+</div>
+{% endblock %}

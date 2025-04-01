@@ -1,0 +1,6 @@
+<h2>Waiting Room</h2>
+<p>Waiting for {{ specialist.full_name }} to join...</p>
+
+{% if request.user == consultation.specialist.user %}
+    <a href="{% url 'start_video_call' consultation.id %}" class="btn btn-primary">Start Consultation</a>
+{% endif %}
